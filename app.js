@@ -7,11 +7,11 @@ const connectDB = require("./db/connect");
 const tasks = require("./routes/tasks");
 
 // MIDDLEWARE
+app.use(express.static("./public"));
 app.use(express.json());
 app.use("/api/v1/tasks", tasks);
 
 const PORT = 3000;
-
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);

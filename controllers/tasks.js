@@ -2,6 +2,8 @@
 const Task = require("../models/Tasks");
 
 // CONTROLLERS
+
+// GET ALL TASKS
 const getAllTasks = async (req, res) => {
   try {
     const tasks = await Task.find({});
@@ -13,6 +15,7 @@ const getAllTasks = async (req, res) => {
   }
 };
 
+// CREATE TASK
 const createTask = async (req, res) => {
   try {
     const task = await Task.create(req.body);
@@ -21,6 +24,8 @@ const createTask = async (req, res) => {
     res.status(500).json({ msg: error });
   }
 };
+
+// GET SINGLE-TASK
 const getTask = async (req, res) => {
   try {
     const { id: taskID } = req.params;
@@ -35,9 +40,8 @@ const getTask = async (req, res) => {
     res.status(500).json({ msg: error });
   }
 };
-const updateTask = (req, res) => {
-  res.send("updated");
-};
+
+// DELETE TASK
 const deleteTask = async (req, res) => {
   try {
     const { id: taskID } = req.params;
@@ -55,10 +59,29 @@ const deleteTask = async (req, res) => {
   }
 };
 
+// UPDATE TASK
+const updateTask = async (req, res) => {
+  try {
+    const { id: taskID } = req.params;
+
+    const task = await Task.findOneAndUpdate({ _id: taskID }, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!task) {
+      return res.status(404).json({ msg: "Task not found" });
+    }
+    return res.status(200).json({ task: task });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
+};
+
 module.exports = {
   getAllTasks,
   getTask,
   createTask,
   updateTask,
   deleteTask,
+  editTask,
 };
