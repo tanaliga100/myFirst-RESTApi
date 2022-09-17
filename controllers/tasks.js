@@ -7,7 +7,12 @@ const Task = require("../models/Tasks");
 const getAllTasks = async (req, res) => {
   try {
     const tasks = await Task.find({});
-    res.status(200).json({ tasks });
+    // sample responses
+    // res.status(200).json({ tasks, amount: tasks.length, success: true });
+    // res.status(200).json({ tasks, amount: tasks.length, success: true });
+    res
+      .status(200)
+      .json({ tasks, data: { status: "success", nbHits: tasks.length } });
   } catch (error) {
     res.status(500).json({
       msg: error,
